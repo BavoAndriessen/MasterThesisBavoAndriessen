@@ -1,0 +1,22 @@
+@startuml
+skinparam dpi 300
+
+
+
+abstract class MetricsObserver {
+    + void new_data()
+}
+
+class ExampleAnomalyDetectionMetricsObserver {
+    - model
+    + new_data(target_data)
+}
+
+
+class MetricsProvisioner {
+    + run()
+    + register(metricsObserver: MetricsObserver)
+}
+
+MetricsObserver <|-- ExampleAnomalyDetectionMetricsObserver
+MetricsProvisioner "1" o-right- "*" MetricsObserver

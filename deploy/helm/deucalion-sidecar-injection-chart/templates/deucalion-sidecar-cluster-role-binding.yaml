@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: deucalion-sidecar-role-binding
+subjects:
+- name: {{ .Values.admissionController.webhookService.args.serviceAccountName }} 
+  namespace: {{ .Values.applicationNamespace }}
+  kind: ServiceAccount
+  
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: deucalion-sidecar-cluster-role

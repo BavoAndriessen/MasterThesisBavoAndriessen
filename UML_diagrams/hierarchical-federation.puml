@@ -1,0 +1,45 @@
+@startuml
+skinparam Monochrome true
+skinparam dpi 300
+allowmixing
+
+database "Root server" {
+}
+
+rectangle "Datacenter A" {
+    database "Server A" {
+    
+    }
+    collections "targets A"
+}
+
+rectangle "Datacenter B" {
+    collections "targets B"
+    database "Server B" {
+        
+    }
+}
+
+rectangle "Datacenter C" {
+    database "Server C" {
+    
+    }
+    collections "targets C"
+}
+
+
+
+
+"Root server" --> "Server B" 
+"Root server" --> "Server C" : pull federated metrics
+"Root server" --> "Server A" 
+
+
+"Server B" --> "targets B"
+"Server C" --> "targets C"
+"Server A" --> "targets A"
+
+
+
+
+@enduml

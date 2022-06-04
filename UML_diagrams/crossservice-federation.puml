@@ -1,0 +1,31 @@
+@startuml
+skinparam Monochrome true
+' skinparam linetype ortho
+skinparam dpi 300
+allowmixing
+
+database "Server A: system metrics" {
+}
+
+database "Server B: application metrics" {
+
+}
+collections "targets of service A"
+
+
+collections "targets of service B"
+database "Server C: application metrics" {
+    
+}
+
+"Server A: system metrics" --> "targets of service A"
+"Server A: system metrics" --> "targets of service B"
+
+"Server B: application metrics" --> "targets of service A"
+"Server C: application metrics" --> "targets of service B"
+
+"Server B: application metrics" --> "Server A: system metrics"
+"Server C: application metrics" --> "Server A: system metrics"
+
+
+@enduml

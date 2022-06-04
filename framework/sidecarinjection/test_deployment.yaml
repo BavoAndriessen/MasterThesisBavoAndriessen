@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-exporter-manual-deployment
+  namespace: default
+  labels:
+    app: node-exporter-manual
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-exporter-manual
+  template:
+    metadata:
+      labels:
+        app: node-exporter-manual
+        deucalion-sidecar-enabled: "false"
+    spec:
+      containers:
+      - name: node-exporter-manual
+        image: prom/node-exporter:latest

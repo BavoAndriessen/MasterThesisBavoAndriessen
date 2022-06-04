@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: deucalion-sidecar-cluster-role
+  namespace: {{ .Values.applicationNamespace }}
+rules:
+  - apiGroups:
+        - ""
+        - apps
+        - autoscaling
+        - batch
+        - extensions
+        - policy
+        - rbac.authorization.k8s.io
+    resources:
+      - pods
+      - componentstatuses
+      - deployments
+      - endpoints
+      - jobs
+      - nodes
+      - services
+    verbs: ["get", "list", "watch"]

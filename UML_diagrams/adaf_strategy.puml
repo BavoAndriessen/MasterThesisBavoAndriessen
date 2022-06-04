@@ -1,0 +1,27 @@
+@startuml
+skinparam dpi 300
+
+
+
+class MetricsProvisioner {
+    + run()
+}
+
+abstract class MetricsFetcherStrategy {
+    + get_metrics()
+}
+
+class PrometheusTargetScraper {
+    + get_metrics()
+}
+
+class PrometheusServerQuerier {
+    + get_metrics()
+}
+
+
+
+
+PrometheusTargetScraper -up-|> MetricsFetcherStrategy
+PrometheusServerQuerier -up-|> MetricsFetcherStrategy
+MetricsProvisioner o-right- MetricsFetcherStrategy

@@ -1,0 +1,20 @@
+#metrics_interval: 5
+#
+#alert_manager:
+#  alert_name: 'deucalion_anomaly_alert'
+#  host: 'alert-manager-service.deucalion-system.svc.cluster.local' # TODO: inject dynamically
+#  port: 9093 # TODO: inject dynamically
+## sidecar config
+#type: 'prometheus_sidecar'
+#config:
+#  namespace: default  # TODO: inject dynamically
+#  metrics_path: 'metrics'
+#  targets:
+#    - 'localhost:9100'
+#    - 'localhost:9090'
+
+
+# federated config
+#type: 'prometheus_federated'
+#config:
+#  server_port: 9090

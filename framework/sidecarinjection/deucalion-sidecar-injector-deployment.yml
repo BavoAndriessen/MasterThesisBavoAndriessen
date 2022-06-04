@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: deucalion-sidecar-injector
+  namespace: default
+spec:
+  selector:
+    app: deucalion-sidecar-injector
+  ports:
+    - port: 443
+      targetPort: tls
+      name: application
+#    - port: 80
+#      targetPort: metrics
+#      name: metrics
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deucalion-sidecar-injector
+  namespace: default
+  labels:
+    app: deucalion-sidecar-injector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deucalion-sidecar-injector
+  template:
+    metadata:
+      labels:
+        app: deucalion-sidecar-injector
+    spec:
+      containers:
+      - name: deucalion-sidecar-injector
+        image: bavoandriessen/deucalion-sidecar-injector:1.1.3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 443
+          name: tls
+#          - containerPort: 80
+#            name: metrics
+        args:
+          - "webhook"
+          - "--default-sidecar-image"
+          - "bavoandriessen/deucalion-app:1.0.2"
+        volumeMounts:
+          - name: webhook-tls-certs
+            mountPath: /etc/webhook/certs
+            readOnly: true
+      volumes:
+        - name: webhook-tls-certs
+          secret:
+            secretName: deucalion-sidecar-injector-tls

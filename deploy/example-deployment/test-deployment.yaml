@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-service-account-tester-deployment
+  namespace: default
+  labels:
+    app: python-service-account-tester
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-service-account-tester
+  template:
+    metadata:
+      annotations: 
+        deucalion-sidecar-image: "bavoandriessen/deucalion-app:2.0.0"
+      labels:
+        app: python-service-account-tester
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: deucalion-sidecar-service-account
+      containers:
+      - name: python-service-account-tester-container
+        image: python
+        args: ['sleep', '50000000']
+        
+        

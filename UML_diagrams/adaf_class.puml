@@ -1,0 +1,39 @@
+@startuml
+skinparam dpi 300
+
+
+abstract class MetricsObserver {
+    + void new_data()
+}
+
+class ExampleAnomalyDetectionMetricsObserver {
+    - model
+    + new_data(target_data)
+}
+
+
+class MetricsProvisioner {
+    + run()
+    + register(metricsObserver: MetricsObserver)
+}
+
+abstract class MetricsFetcherStrategy {
+    + get_metrics()
+}
+
+class PrometheusTargetScraper {
+    + get_metrics()
+}
+
+class PrometheusServerQuerier {
+    + get_metrics()
+}
+
+
+MetricsObserver <|-- ExampleAnomalyDetectionMetricsObserver
+MetricsProvisioner "1" o-right- "*" MetricsObserver
+
+
+PrometheusTargetScraper -up-|> MetricsFetcherStrategy
+PrometheusServerQuerier -up-|> MetricsFetcherStrategy
+MetricsProvisioner o-left- MetricsFetcherStrategy

@@ -1,0 +1,24 @@
+@startuml
+skinparam dpi 300
+
+
+
+class Context {
+}
+
+interface IStrategy {
+    + algorithm()
+}
+
+class StrategyA {
+    + algorithm()
+}
+
+class StrategyB {
+    + algorithm()
+}
+
+
+StrategyA -up-|> IStrategy
+StrategyB -up-|> IStrategy
+Context o-right- IStrategy

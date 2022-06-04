@@ -1,0 +1,33 @@
+@startuml
+skinparam Monochrome true
+' skinparam linetype ortho
+skinparam dpi 300
+
+|Application code|
+start
+:Instantiate model & observer;
+|Framework|
+:Register observer;
+:Configure;
+
+repeat
+switch (Architecture?)
+case (Sidecar)
+    :Scrape target;
+case (Federated)
+    :Query Promehtues Server;
+endswitch
+
+:Pass monitoring data to observer;
+|Application code|
+:Perform anomaly detection;
+|Framework|
+
+
+if (Anomaly detected?) then (yes)
+    :Send anomaly alert;
+else (no)
+endif 
+
+repeat while 
+

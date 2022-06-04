@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.admissionController.webhookService.appName }}-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: {{ .Values.admissionController.webhookService.appName }}
+  ports:
+    - port: 443
+      targetPort: tls
+      name: application
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.admissionController.webhookService.appName }}-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.admissionController.webhookService.appName }}
+spec:
+  replicas: {{ .Values.admissionController.webhookService.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.admissionController.webhookService.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.admissionController.webhookService.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.admissionController.webhookService.appName }}
+        image: {{ .Values.admissionController.webhookService.image }}
+        imagePullPolicy: {{ .Values.admissionController.webhookService.imagePullPolicy }}
+        ports:
+        - containerPort: 443
+          name: tls
+        args:
+          - webhook
+          - "--default-sidecar-image"
+          - "{{ .Values.admissionController.webhookService.args.defaultSidecarImage }}"
+          - "--service-account-name"
+          - "{{ .Values.admissionController.webhookService.args.serviceAccountName }}"
+          - "--alert-manager-port"
+          - "{{ .Values.admissionController.webhookService.args.alertManagerPort }}"
+          - "--alert-manager-host"
+          - "{{ .Values.alertManager.appName }}-service.{{ .Values.namespace }}.svc.cluster.local"
+          - "--alert-manager-alert-name"
+          - "{{ .Values.admissionController.webhookService.args.alertName }}"
+        volumeMounts:
+          - name: {{ .Values.admissionController.webhookService.volumes.tlsCertsVolumeName }}
+            mountPath: /etc/webhook/certs
+            readOnly: true
+      volumes:
+        - name: {{ .Values.admissionController.webhookService.volumes.tlsCertsVolumeName }}
+          secret:
+            secretName: {{ .Values.admissionController.webhookService.appName }}-tls-secret

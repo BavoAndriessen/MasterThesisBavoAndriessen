@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: 'deucalion-sidecar-config-map'
+  namespace: default
+data:
+  deucalion_config.yaml: |
+    metrics_interval: 5
+
+    type: 'prometheus_sidecar'
+    config:
+      namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-exporter
+  namespace: default
+  labels:
+    app: node-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      annotations: 
+        deucalion-sidecar-image: "bavoandriessen/deucalion-app:3.0.4"
+        deucalion-config-map: deucalion-sidecar-config-map
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "9100"
+        prometheus.io/scrape: "true"
+      labels:
+        app: node-exporter
+    spec:
+      containers:
+      - name: node-exporter
+        image: prom/node-exporter:latest
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-exporter2
+  namespace: default
+  labels:
+    app: node-exporter2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-exporter2
+  template:
+    metadata:
+      annotations: 
+        deucalion-sidecar-image: "bavoandriessen/deucalion-app:3.0.2"
+      labels:
+        app: node-exporter2
+    spec:
+      containers:
+      - name: node-exporter2
+        image: prom/node-exporter:latest
+        

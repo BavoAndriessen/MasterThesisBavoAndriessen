@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.alertManager.appName }}-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: {{ .Values.alertManager.appName }}
+  ports:
+    - port: {{ .Values.admissionController.webhookService.args.alertManagerPort }}
+      targetPort: http
+      name: application
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.alertManager.appName }}-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.alertManager.appName }}
+spec:
+  replicas: {{ .Values.alertManager.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.alertManager.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.alertManager.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.alertManager.appName }}
+        image: {{ .Values.alertManager.image }}
+        imagePullPolicy: {{ .Values.alertManager.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.admissionController.webhookService.args.alertManagerPort }}
+          name: http

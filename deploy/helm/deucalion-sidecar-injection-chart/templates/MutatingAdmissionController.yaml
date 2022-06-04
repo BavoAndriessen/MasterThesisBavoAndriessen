@@ -1,0 +1,30 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.admissionController.webhookService.appName }}-admission-controller-configuration
+webhooks:
+  - name: {{ .Values.admissionController.webhookService.appName }}-service.{{ .Values.namespace }}.svc.cluster.local
+    rules:
+      - apiGroups:   [""]
+        apiVersions: ["v1", "v1beta1"]
+        operations:  ["CREATE"]
+        resources:   ["pods"]
+        scope:       "*"
+    namespaceSelector:
+      matchLabels:
+        deucalion-injection: "enabled"
+    # objectSelector:
+    #   matchLabels:
+    #     {{ .Values.admissionController.matchabel }}: {{ .Values.admissionController.matchLabelValue | quote }}
+    clientConfig:
+      service:
+        namespace: {{ .Values.namespace }}
+        name: {{ .Values.admissionController.webhookService.appName }}-service
+        path: {{ .Values.admissionController.webhookService.mutateEndpoint }}
+      caBundle: "{{ .Values.admissionController.webhookService.caBundle }}"
+        
+    admissionReviewVersions: ["v1", "v1beta1"]
+    sideEffects: None
+    timeoutSeconds: {{ .Values.admissionController.timeoutSeconds }}
+
+

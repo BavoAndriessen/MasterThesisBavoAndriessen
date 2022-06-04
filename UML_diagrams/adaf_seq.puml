@@ -1,0 +1,43 @@
+@startuml
+skinparam dpi 300
+
+==Initialization==
+main ->> MetricsProvisioner **: new
+MetricsProvisioner ->> MetricsProvisioner: Read configuration file
+
+alt configured as sidecar architecture
+    MetricsProvisioner ->> PrometheusTargetScraper **: new
+else configured as federated architecture
+    MetricsProvisioner ->> PrometheusServerQuerier **: new
+end
+
+main ->> ExampleMetricsObserver **: new
+main ->> MetricsProvisioner: register ExampleMetricsObserver
+main ->> MetricsProvisioner: run
+
+==Iteration==
+
+loop every metrics_interval
+    alt configured as sidecar architecture
+        MetricsProvisioner -> PrometheusTargetScraper: get_metrics
+        activate PrometheusTargetScraper
+        PrometheusTargetScraper --> MetricsProvisioner: data
+        deactivate PrometheusTargetScraper
+    else configured as federated architecture
+        MetricsProvisioner -> PrometheusServerQuerier: get_metrics
+        activate PrometheusServerQuerier
+        PrometheusServerQuerier --> MetricsProvisioner: data
+        deactivate PrometheusServerQuerier
+    end
+
+    MetricsProvisioner -> ExampleMetricsObserver: new_data
+    opt anomaly detected
+        ExampleMetricsObserver --> MetricsProvisioner: anomaly detected
+        database Alertmanager
+        MetricsProvisioner ->> Alertmanager: anomaly alert
+        
+    end
+end
+
+
+

@@ -1,0 +1,6 @@
+**/.idea/**
+clones.tmp/
+*.icloud
+kubeandistioandprometheusinstall/istio-1.12.2/
+.vscode/
+**/.data/*

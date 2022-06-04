@@ -1,0 +1,18 @@
+{
+  "hosts": [
+    "cluster.local"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 4096
+  },
+  "names": [
+    {
+      "C": "BE",
+      "L": "Ghent",
+      "O": "Ghent University",
+      "OU": "IDLab",
+      "ST": "Oost-Vlaanderen"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+@startuml
+skinparam dpi 300
+
+
+class Subject {
+    + observers[]
+    + registerObserver()
+    + notifyObservers()
+}
+
+interface Observer {
+    + update()
+}
+
+class ObserverA {
+    + update()
+}
+
+class ObserverB {
+    + update()
+}
+
+
+ObserverA -up-|> Observer
+ObserverB -up-|> Observer
+Subject o-left- Observer

@@ -1,0 +1,30 @@
+admissionController:
+  webhookService:
+    args:
+      defaultSidecarImage: "bavoandriessen/deucalion-app:3.0.4"
+      serviceAccountName: "deucalion-sidecar-service-account"
+      alertName: "deucalion_anomaly_alert"
+      alertManagerPort: 9093
+
+    volumes: 
+      tlsCertsVolumeName: "webhook-tls-certs"
+    imagePullPolicy: "Always"
+    image: "bavoandriessen/deucalion-sidecar-injector:2.0.11"
+    replicas: 1
+    mutateEndpoint: "/mutate"
+    appName: "deucalion-sidecar-injector"
+    
+
+  timeoutSeconds: 5
+  matchabel: "deucalion-sidecar-enabled"
+  matchLabelValue: "true"
+
+alertManager:
+  appName: "alert-manager"
+  replicas: 1
+  image: "prom/alertmanager:latest"
+  imagePullPolicy: "Always"
+  
+
+namespace: "deucalion-system"
+applicationNamespace: "sidecar"

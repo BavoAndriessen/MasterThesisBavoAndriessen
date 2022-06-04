@@ -1,0 +1,19 @@
+version: "3.8"
+
+services: 
+  node-exporter1: 
+    container_name: node-exporter1
+    image: prom/node-exporter:latest
+    ports:
+      - 9100:9100
+  node-exporter2: 
+    container_name: node-exporter2
+    image: prom/node-exporter:latest
+    ports: 
+      - 9101:9100
+  deucalion-app:
+    container_name: deucalionframework-app
+    image: bavoandriessen/deucalion-app:latest
+    depends_on: 
+      - node-exporter1
+      - node-exporter2
