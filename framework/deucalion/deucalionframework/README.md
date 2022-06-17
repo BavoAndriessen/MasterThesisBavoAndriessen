@@ -1,11 +1,16 @@
-### Build deucalion
-
+### Build and install deucalion
 ```
+pip install build
 python3 -m build
-
 ```
 
-### Install locally
+And then install from locally built wheel:
 ```
-python3 -m pip install dist/deucalion-<...>.whl
+pip install dist/deucalion-<...>.whl
+```
+
+### Install from pip repository
+
+```
+pip install pip install -i https://test.pypi.org/simple/ deucalion
 ```
