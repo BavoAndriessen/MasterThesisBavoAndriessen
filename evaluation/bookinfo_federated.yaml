@@ -38,9 +38,9 @@ data:
   deucalion_config.yaml: |
     metrics_interval: 5
 
-    type: 'prometheus_sidecar'
+    type: 'prometheus_federated'
     config:
-      namespace: sidecar
+      server_port: 9090
 ---
 apiVersion: v1
 kind: Service
