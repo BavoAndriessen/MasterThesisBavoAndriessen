@@ -4,7 +4,7 @@ This directory tree contains the source code of the Deucalion python framework a
 
 
 
-See the python framework's [README.md](./deucalion/deucalionframework/README.md) for information on how to build it. 
+See the python framework's [README.md](./deucalion/deucalionframework/README.md) for information on how to build and install it. 
 
 See [sidecarinjection/README.md](./sidecarinjection/README.md) for information about the deucalion sidecar injector. 
 
