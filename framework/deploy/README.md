@@ -48,8 +48,8 @@ The configuration file contains the scrape interval and architecture specific co
 Add Prometheus annotations (```prometheus.io/path```, ```prometheus.io/port```, ```prometheus.io/scrape```) as you would normally do when monitored by Prometheus. 
 
 Annotate the Pods with the necessary deucalion specific annotations: 
-- deucalion-sidecar-image: <deucalion_sidecar_image>
-- deucalion-config-map: <deucalion-sidecar-config-map>
+- ```deucalion-sidecar-image```: <deucalion_sidecar_image>
+- ```deucalion-config-map```: <deucalion-sidecar-config-map>
 
 ### Deploy
 
