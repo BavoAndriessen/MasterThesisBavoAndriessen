@@ -3,7 +3,7 @@
 The cfssl tool is used to generate the CA and TLS certificate and key. 
 See the cfssl repo for more information about the cfssl tool: https://github.com/cloudflare/cfssl
 
-# Step 1: Generate CA
+## Step 1: Generate CA
 First generate a CA. If you already have a CA that you want to use, go to the next step. 
 
 Use the ```ca-csr.json``` as the certificate signing request or modify it to fit your needs: 
@@ -11,7 +11,7 @@ Use the ```ca-csr.json``` as the certificate signing request or modify it to fit
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 ```
 
-# Step 2: Generate certificate
+## Step 2: Generate certificate
 Generate your certificate, using the generated files from the step above or your own CA. Note that the hostname parameter is important: it should be in accordance with how the webhook service is eventually deployed (service name and namspace). Modify this parameter value when other values are used when installing the control plane. Use ```ca-config.json``` for configurating the certificate, or modify it to fit your needs. 
 ```
 cfssl gencert \
